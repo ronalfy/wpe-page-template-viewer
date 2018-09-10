@@ -23,6 +23,7 @@ class WPE_Page_Template_Viewer {
 			add_action( 'manage_pages_custom_column', array( $this, 'manage_pages_custom_column' ) );
 			add_action( 'restrict_manage_posts' , array( $this, 'maybe_output_template_filter' ), 10, 2 );
 			add_filter( 'parse_query', array( $this, 'filter_templates' ) );
+			load_plugin_textdomain( 'wpe-page-template-viewer', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 			$this->page_templates = wp_get_theme()->get_page_templates();
 		}
 	}
