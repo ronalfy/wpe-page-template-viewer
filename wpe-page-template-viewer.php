@@ -67,11 +67,15 @@ class WPE_Page_Template_Viewer {
 	 */
 	public function maybe_output_template_filter( $post_type, $which ) {
 		if ( 'page' !== $post_type ) return;
+		$option_selected = 'none';
+		if ( isset( $_REQUEST['page-template'] ) ) {
+			$option_selected = $_REQUEST['page-template'];
+		}
 		echo '<select id="page-template" name="page-template">';
-		printf( '<option value="none">%s</option>', esc_html__( 'Select a Template', 'wpe-page-template-viewer' ) );
-		printf( '<option value="default">%s</option>', esc_html__( 'Default', 'wpe-page-template-viewer' ) );
+		printf( '<option value="none" %s>%s</option>', selected( 'none', $option_selected, false ), esc_html__( 'Select a Template', 'wpe-page-template-viewer' ) );
+		printf( '<option value="default" %s>%s</option>', selected( 'default', $option_selected, false ), esc_html__( 'Default', 'wpe-page-template-viewer' ) );
 		foreach( $this->page_templates as $slug => $name ) {
-			printf( '<option value="%s">%s</option>', esc_attr( $slug ), esc_html( $name ) );
+			printf( '<option value="%s" %s>%s</option>', esc_attr( $slug ), selected( $slug, $option_selected, false ), esc_html( $name ) );
 		}
 		echo '</select>';	
 	}
