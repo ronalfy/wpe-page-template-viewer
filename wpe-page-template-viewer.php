@@ -21,8 +21,19 @@ class WPE_Page_Template_Viewer {
 		if( 'edit.php' === $pagenow && isset( $_GET['post_type'] ) && 'page' === $_GET['post_type'] ) {
 			add_filter( 'manage_pages_columns', array( $this, 'manage_page_columns' ) );
 			add_action( 'manage_pages_custom_column', array( $this, 'manage_pages_custom_column' ) );
+			add_action( 'restrict_manage_posts' , array( $this, 'maybe_output_template_filter' ), 10, 2 );
 			$this->page_templates =  wp_get_theme()->get_page_templates();
 		}
+	}
+
+	public function maybe_output_template_filter( $post_type, $which ) {
+		if ( 'page' !== $post_type ) return;
+		echo '<select id="page-template" name="page-template">';
+		printf( '<option value="default">%s</option>', esc_html__( 'Default', 'wpe-page-template-viewer' ) );
+		foreach( $this->page_templates as $slug => $name ) {
+			printf( '<option value="%s">%s</option>', esc_attr( $slug ), esc_html( $name ) );
+		}
+		echo '</select>';	
 	}
 
 	public function manage_page_columns( $columns ) {
